@@ -7,6 +7,7 @@ SUPABASE_URL = st.secrets["supabaseurl"]
 SUPABASE_KEY = st.secrets["supabasekey"]
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
+
 def upsert_record(tabela: str, id: int, register: dict) -> bool:
     
         register_adjusted = {"id": id} | register
@@ -117,7 +118,11 @@ def main_page():
 def feedback_page():
     st.write("Você digitou:", st.session_state['user_input'])
     st.write("Resultado:", st.session_state['result'])
-    st.write(upsert_record("pdvlegal", 1, {"pergunta": "teste", "resposta": st.session_state['result'], "is_useful": False, "feedback": ""}))
+    st.write(upsert_record("pdvlegal", 2,
+  {'question': 'dfsdfsdfsd',
+  'answer': 'aa',
+  'is_useful': None,
+  'feedback': 'sss'}))
     st.write("### O resultado foi útil?")
     col1, col2 = st.columns(2)
 
