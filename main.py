@@ -1,5 +1,4 @@
 import streamlit as st
-import requests
 
 
 # Configuração do estado da sessão
@@ -31,7 +30,7 @@ def main_page():
     
 
             st.session_state['user_input'] = user_input
-            st.session_state['result'] = "test"
+            st.session_state['result'] = st.secrets["langflow"]
             st.session_state['page'] = 'feedback'
             
             ########################################################
