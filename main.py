@@ -34,8 +34,6 @@ def get_records_by_field(tabela: str, field_name: str, field_value):
         except:
             return []
 
-    
-
 def send_message(message: str):
     url = "https://api.langflow.astra.datastax.com/lf/05508e76-dadd-49b5-855d-2cb85321b8c7/api/v1/run/ba007a4e-22fb-4b97-b364-a0143aec9e38?stream=false"
     headers = {
@@ -99,7 +97,7 @@ if 'additional_feedback' not in st.session_state:
 def main_page():
     st.set_page_config(page_title="Avaliação agente de IA PDV Legal", page_icon=":pencil:")
 
-    st.title("Ajude a avaliar a qualidade das respostas do agente de IA PDV Legal")
+    st.title("Digite uma pergunta, aguarde a resposta e dê o feedback")
 
     user_input = st.text_area("Digite a sua pergunta:", height=200)
 
