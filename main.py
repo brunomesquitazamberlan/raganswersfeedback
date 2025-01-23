@@ -2,50 +2,6 @@ import streamlit as st
 import requests
 
 
-
-def send_message(message: str):
-    url = "https://api.langflow.astra.datastax.com/lf/05508e76-dadd-49b5-855d-2cb85321b8c7/api/v1/run/ba007a4e-22fb-4b97-b364-a0143aec9e38?stream=false"
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer AstraCS:KpOOIOCUzKYZKhGlZqPzJYot:be8d6f25fc4a7e9619d11b89721dd2c00c710cef128a18ddbb05129a6ad6e1a0"
-    }
-    payload = {
-        "input_value": message,
-        "output_type": "chat",
-        "input_type": "chat",
-        "tweaks": {
-            "Agent-tNQyS": {},
-            "ChatInput-VoA5k": {},
-            "AstraDB-MDDvM": {},
-            "OpenAIEmbeddings-BO41u": {},
-            "RetrieverTool-tfdq4": {},
-            "AstraDB-XWcEV": {},
-            "OpenAIEmbeddings-6ZkHB": {},
-            "RetrieverTool-PYPTu": {},
-            "ChatOutput-YlyNM": {}
-        }
-    }
-
-    response = requests.post(url, headers=headers, json=payload)
-
-    if response.status_code == 200:
-        try:
-            # Extrair o texto da resposta
-            data = response.json()
-            outputs = data.get("outputs", [])
-            if outputs:
-                results = outputs[0].get("outputs", [])
-                if results:
-                    message_text = results[0].get("results", {}).get("message", {}).get("text")
-                    return message_text
-            return "Não foi possível encontrar o texto na resposta."
-        except Exception as e:
-            return f"Erro ao processar a resposta: {str(e)}"
-    else:
-        return {"error": response.text, "status_code": response.status_code}
-
-
-
 # Configuração do estado da sessão
 if 'page' not in st.session_state:
     st.session_state['page'] = 'main'
@@ -75,7 +31,7 @@ def main_page():
     
 
             st.session_state['user_input'] = user_input
-            st.session_state['result'] = send_message(user_input)
+            st.session_state['result'] = "test"
             st.session_state['page'] = 'feedback'
             
             ########################################################
