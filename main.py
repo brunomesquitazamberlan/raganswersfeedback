@@ -1,12 +1,16 @@
 import streamlit as st
 import requests
 from supabase import create_client
+import uuid
 
 
 SUPABASE_URL = st.secrets["supabaseurl"]  
 SUPABASE_KEY = st.secrets["supabasekey"]
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
+
+def generate_uuid() -> int:
+    return uuid.uuid4()
 
 def upsert_record(tabela: str, id: int, register: dict) -> bool:
     
@@ -118,26 +122,18 @@ def main_page():
 def feedback_page():
     st.write("Você digitou:", st.session_state['user_input'])
     st.write("Resultado:", st.session_state['result'])
-    st.write(upsert_record("pdvlegal", 2,
-  {'question': 'dfsdfsdfsd',
-  'answer': 'aa',
-  'is_useful': None,
-  'feedback': 'sss'}))
     st.write("### O resultado foi útil?")
     col1, col2 = st.columns(2)
 
     if col1.button("👍 Sim"):
+        upsert_record("pdvlegal", generate_uuid(), {'question': st.session_state['user_input'], 'answer': st.session_state['result'], 'is_useful': True, 'feedback': ''})
         st.session_state['is_useful'] = True
         st.session_state['page'] = 'thank_you'
         
-        #update_is_useful_feedback(collection_name: str, id_transacao: str, is_useful: bool)
-        
-        #update_is_useful_feedback("prisma", st.session_state['document_id'], st.session_state['is_useful'])
         st.rerun()
 
     if col2.button("👎 Não"):
         st.session_state['is_useful'] = False
-        #update_is_useful_feedback("prisma", st.session_state['document_id'], st.session_state['is_useful'])
         st.rerun()
 
     if st.session_state['is_useful'] == False:
@@ -145,9 +141,8 @@ def feedback_page():
         if st.button("Enviar Feedback"):
             st.session_state['additional_feedback'] = additional_feedback
             
-            #update_feedback_txt("prisma",
-            #                    st.session_state['document_id'],
-            #                      st.session_state['additional_feedback'])
+            upsert_record("pdvlegal", generate_uuid(), {'question': st.session_state['user_input'], 'answer': st.session_state['result'], 'is_useful': False, 'feedback': st.session_state['additional_feedback']})
+
             st.session_state['page'] = 'thank_you'
             st.rerun()
 
