@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 from supabase import create_client
-import uuid
+import random
 
 
 SUPABASE_URL = st.secrets["supabaseurl"]  
@@ -9,8 +9,10 @@ SUPABASE_KEY = st.secrets["supabasekey"]
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 
-def generate_uuid() -> int:
-    return uuid.uuid4()
+import random
+
+def generate_supabase_id():
+    return random.randint(100, 999)
 
 def upsert_record(tabela: str, id: int, register: dict) -> bool:
     
@@ -126,7 +128,7 @@ def feedback_page():
     col1, col2 = st.columns(2)
 
     if col1.button("👍 Sim"):
-        upsert_record("pdvlegal", generate_uuid(), {'question': st.session_state['user_input'], 'answer': st.session_state['result'], 'is_useful': True, 'feedback': ''})
+        upsert_record("pdvlegal", generate_supabase_id(), {'question': st.session_state['user_input'], 'answer': st.session_state['result'], 'is_useful': True, 'feedback': ''})
         st.session_state['is_useful'] = True
         st.session_state['page'] = 'thank_you'
         
@@ -141,7 +143,7 @@ def feedback_page():
         if st.button("Enviar Feedback"):
             st.session_state['additional_feedback'] = additional_feedback
             
-            upsert_record("pdvlegal", generate_uuid(), {'question': st.session_state['user_input'], 'answer': st.session_state['result'], 'is_useful': False, 'feedback': st.session_state['additional_feedback']})
+            upsert_record("pdvlegal", generate_supabase_id(), {'question': st.session_state['user_input'], 'answer': st.session_state['result'], 'is_useful': False, 'feedback': st.session_state['additional_feedback']})
 
             st.session_state['page'] = 'thank_you'
             st.rerun()
