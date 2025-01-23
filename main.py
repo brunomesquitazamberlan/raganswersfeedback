@@ -1,5 +1,11 @@
 import streamlit as st
 import requests
+from supabase import create_client
+
+
+SUPABASE_URL = st.secrets["supabaseurl"]  
+SUPABASE_KEY = st.secrets["supabasekey"]
+supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 def send_message(message: str):
     url = "https://api.langflow.astra.datastax.com/lf/05508e76-dadd-49b5-855d-2cb85321b8c7/api/v1/run/ba007a4e-22fb-4b97-b364-a0143aec9e38?stream=false"
