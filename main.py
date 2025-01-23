@@ -7,6 +7,28 @@ SUPABASE_URL = st.secrets["supabaseurl"]
 SUPABASE_KEY = st.secrets["supabasekey"]
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
+def upsert_record(tabela: str, id: int, register: dict) -> bool:
+    
+        register_adjusted = {"id": id} | register
+
+        try:
+            supabase.table(tabela).upsert(register_adjusted).execute()
+            return True
+        except:
+            return False
+
+def get_records_by_field(tabela: str, field_name: str, field_value):
+    
+        try:
+            response = supabase.table(tabela).select("*").eq(f"{field_name}", field_value).execute()
+            
+            return response.data
+        
+        except:
+            return []
+
+    
+
 def send_message(message: str):
     url = "https://api.langflow.astra.datastax.com/lf/05508e76-dadd-49b5-855d-2cb85321b8c7/api/v1/run/ba007a4e-22fb-4b97-b364-a0143aec9e38?stream=false"
     headers = {
@@ -81,6 +103,8 @@ def main_page():
             st.session_state['user_input'] = user_input
             st.session_state['result'] = send_message(user_input)
             st.session_state['page'] = 'feedback'
+
+            upsert_record("pdvlegal", 1, {"pergunta": user_input, "resposta": st.session_state['result'], "is_useful": None, "feedback": None})
             
             ########################################################
 
