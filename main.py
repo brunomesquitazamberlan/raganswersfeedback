@@ -104,7 +104,7 @@ def main_page():
             st.session_state['result'] = send_message(user_input)
             st.session_state['page'] = 'feedback'
 
-            upsert_record("pdvlegal", 1, {"pergunta": user_input, "resposta": st.session_state['result'], "is_useful": None, "feedback": None})
+            #upsert_record("pdvlegal", 1, {"pergunta": user_input, "resposta": st.session_state['result'], "is_useful": None, "feedback": None})
             
             ########################################################
 
@@ -117,6 +117,7 @@ def main_page():
 def feedback_page():
     st.write("Você digitou:", st.session_state['user_input'])
     st.write("Resultado:", st.session_state['result'])
+    st.write(upsert_record("pdvlegal", 1, {"pergunta": "teste", "resposta": st.session_state['result'], "is_useful": False, "feedback": ""}))
     st.write("### O resultado foi útil?")
     col1, col2 = st.columns(2)
 
